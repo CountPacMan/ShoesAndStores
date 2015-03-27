@@ -221,12 +221,12 @@
       $test_store3->save();
 
       $stores = [];
-      array_push($stores, $test_store);
       array_push($stores, $test_store3);
+      array_push($stores, $test_store);
       $test_brand->updateStores($stores);
 
       // Assert
-      $this->assertEquals($stores[1], $test_brand->getStores()[1]);
+      $this->assertEquals($stores, $test_brand->getStores());
     }
 
     function test_getOtherStores() {
@@ -256,14 +256,8 @@
       $test_brand2->addStore($test_store2);
       $test_brand2->addStore($test_store3);
 
-      $other_stores = [];
-      array_push($other_stores, $test_store2);
-      array_push($other_stores, $test_store3);
-
-      // I haven't figured out how to do an array of objects comparison that gives me consistent results, so I'll assume that if the same number of elements are returned by my method, the test will pass
-      $result = (count([$other_stores]) == count([$test_brand->getOtherStores()]));
       // Assert
-      $this->assertEquals(true, $result);
+      $this->assertEquals([$test_store3, $test_store2], $test_brand->getOtherStores());
     }
 
     function test_deleteWithStore() {

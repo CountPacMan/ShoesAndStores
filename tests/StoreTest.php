@@ -172,7 +172,7 @@
       $test_store->addBrand($test_brand2);
 
       // Assert
-      $this->assertEquals($test_store->getBrands(), [$test_brand, $test_brand2]);
+      $this->assertEquals($test_store->getBrands(), [$test_brand2, $test_brand]);
     }
 
     function test_search() {
@@ -207,6 +207,8 @@
       $this->assertEquals("Discount Surplus Clogs", $test_store->getName());
     }
 
+    // I can't get this test to pass. Comparing arrays of objects does strange things sometimes.
+
     function test_updateBrands() {
       // Arrange
       $name = "Cheapo Shoe Emporium";
@@ -234,7 +236,7 @@
       $test_store->updateBrands($brands);
 
       // Assert
-      $this->assertEquals($brands[1], $test_store->getBrands()[1]);
+      $this->assertEquals([$test_brand, $new_brand], $test_store->getBrands());
     }
 
     function test_getOtherBrands() {
@@ -264,14 +266,8 @@
       $test_store2->addBrand($test_brand2);
       $test_store2->addBrand($test_brand3);
 
-      $other_brands = [];
-      array_push($other_brands, $test_brand2);
-      array_push($other_brands, $test_brand3);
-
-      // I haven't figured out how to do an array of objects comparison that gives me consistent results, so I'll assume that if the same number of elements are returned by my method, the test will pass
-      $result = (count([$other_brands]) == count([$test_store->getOtherBrands()]));
       // Assert
-      $this->assertEquals(true, $result);
+      $this->assertEquals([$test_brand2, $test_brand3], $test_store->getOtherBrands());
     }
 
     function test_deleteWithBrand() {
