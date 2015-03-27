@@ -138,5 +138,24 @@
       $this->assertEquals($test_store, $result);
     }
 
+    function testAddBrand() {
+        //Arrange
+        $name = "Cheapo Shoe Emporium";
+        $id = 1;
+        $test_store = new Store($name, $id);
+        $test_store->save();
+
+        $brand_name = "Dennis Lumberg";
+        $id2 = 2;
+        $test_brand = new Brand($brand_name, $id2);
+        $test_brand->save();
+
+        //Act
+        $test_store->addBrand($test_brand);
+
+        //Assert
+        $this->assertEquals($test_store->getBrands()[0], $test_brand);
+    }
+
   }
 ?>
