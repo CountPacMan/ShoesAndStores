@@ -142,11 +142,6 @@
       $this->assertEquals($test_brand->getStores()[0], $test_store);
     }
 
-
-
-
-
-
     function test_getStores() {
       // Arrange
       $name = "Cheapo Shoe Emporium";
