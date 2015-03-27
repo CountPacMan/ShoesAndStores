@@ -32,7 +32,7 @@
         {% if stores is not empty %}
           <!-- SEARCH FOR Stores -->
           <div class = 'row'>
-            <div class='col-md-12'>
+            <div class='col-md-12 grey'>
               <form action='/search/stores' method='post'>
                 <div class='form-group'>
                   <label for='name'>Store name to search:</label>
@@ -49,7 +49,7 @@
 
           <!-- SEARCH FOR Brands -->
           <div class = 'row'>
-            <div class='col-md-12'>
+            <div class='col-md-12 blue'>
               <form action='/search/brands' method='post'>
                 <div class='form-group'>
                   <label for='name'>Search Brand:</label>
@@ -70,7 +70,7 @@
         {% if stores is empty %}
           <div class='col-md-12'>
         {% else %}
-          <div class='col-md-6'>
+          <div class='col-md-6 manila'>
         {% endif %}
             <h3>Create a new Store</h3>
 

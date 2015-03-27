@@ -1,3 +1,7 @@
+body {
+  background-color: #DBDBD7;
+}
+
 img {
   width: 100px;
   height: 85px;
@@ -56,4 +60,16 @@ ul {
 
 .success {
   color: green;
+}
+
+.manila {
+  background-color: #E0DFB8;
+}
+
+.blue {
+  background-color: #B8B9E0;
+}
+
+.grey {
+  background-color: #B1B2B5;
 }
