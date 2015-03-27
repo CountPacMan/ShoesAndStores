@@ -106,11 +106,11 @@
   $app->post("/brands", function() use ($app) {
     $added = false;
     $brand_added = true;
-    if (isset($_POST['book_id'])) {
-      $brand = new Brand($_POST['name']);
+    if (isset($_POST['store_id'])) {
+      $brand = new Brand($_POST['brand']);
       $brand->save();
-      for ($i = 0; $i < count($_POST['book_id']); $i++) {
-        $store = Store::find($_POST['book_id'][$i]);
+      for ($i = 0; $i < count($_POST['store_id']); $i++) {
+        $store = Store::find($_POST['store_id'][$i]);
         $store->addBrand($brand);
       }
       $added = true;
@@ -140,7 +140,13 @@
     return $app['twig']->render('brands.html.twig', array('brands' => $brands, 'stores' => $stores));
   });
 
+  // delete
 
+  $app->delete("/destroy", function() use ($app) {
+    Store::deleteAll();
+    Brand::deleteAll();
+    return $app['twig']->render('index.html.twig', array('added' => false, 'stores' => Store::getAll(), 'brand_added' => true, 'brands' => Brand::getAll(), 'no_brand_fail' => false));
+  });
 
 
   return $app;
