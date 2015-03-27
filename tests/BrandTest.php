@@ -165,9 +165,6 @@
     }
 
     function test_search() {
-      // for some unknown reason, the teardown is not always working. I'm having to run it agian here or it won't clear the stores.
-      Store::deleteAll();
-      Brand::deleteAll();
       // Arrange
       $name = "Cheapo Shoe Emporium";
       $test_store = new Store($name);
@@ -201,8 +198,6 @@
 
 
     function test_updateStores() {
-      Store::deleteAll();
-      Brand::deleteAll();
       // Arrange
       $name = "Cheapo Shoe Emporium";
       $test_store = new Store($name);
@@ -235,8 +230,6 @@
     }
 
     function test_getOtherStores() {
-      Store::deleteAll();
-      Brand::deleteAll();
       // Arrange
       $name = "Cheapo Shoe Emporium";
       $test_store = new Store($name);
@@ -274,8 +267,6 @@
     }
 
     function test_deleteWithStore() {
-      Store::deleteAll();
-      Brand::deleteAll();
       // Arrange
       $name = "Cheapo Shoe Emporium";
       $test_store = new Store($name);
