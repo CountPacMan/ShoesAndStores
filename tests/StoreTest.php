@@ -43,7 +43,7 @@
     }
 
     function test_setId() {
-      // Assert
+      // Arrange
       $name = "Cheapo Shoe Emporium";
       $test_store = new Store($name);
 
@@ -195,7 +195,7 @@
     }
 
     function test_updateName() {
-      // Assert
+      // Arrange
       $name = "Cheapo Shoe Emporium";
       $test_store = new Store($name);
       $test_store->save();
@@ -211,7 +211,7 @@
 
     function test_updateBrands() {
       Store::deleteAll();
-      // Assert
+      // Arrange
       $name = "Cheapo Shoe Emporium";
       $test_store = new Store($name);
       $test_store->save();
@@ -238,6 +238,46 @@
 
       // Assert
       $this->assertEquals($brands[1], $test_store->getBrands()[1]);
+    }
+
+    function test_getOtherBrands() {
+      Store::deleteAll();
+      Brand::deleteAll();
+      // Arrange
+      $name = "Cheapo Shoe Emporium";
+      $test_store = new Store($name);
+      $test_store->save();
+
+      $name2 = "Discout Shoe Combobulator";
+      $test_store2 = new Store($name);
+      $test_store2->save();
+
+      $brand_name = "Knee-Kays";
+      $test_brand = new Brand($brand_name);
+      $test_brand->save();
+
+      $brand_name2 = "Bob";
+      $test_brand2 = new Brand($brand_name2);
+      $test_brand2->save();
+
+      $brand_name3 = "ReLexicon";
+      $test_brand3 = new Brand($brand_name3);
+      $test_brand3->save();
+
+      // Act
+      $test_store->addBrand($test_brand);
+      $test_store2->addBrand($test_brand2);
+      $test_store2->addBrand($test_brand3);
+
+      $other_brands = [];
+      array_push($other_brands, $test_brand2);
+      array_push($other_brands, $test_brand3);
+
+        // serialize is necessary because my getOtherBrands method does not guarantee the array returned will be in the same order as my test array
+      $results = (serialize($other_brands) == serialize($test_store->getOtherBrands()));
+
+      // Assert
+      $this->assertEquals(true, $results);
     }
 
   }

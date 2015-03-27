@@ -49,6 +49,20 @@ class Store {
     return $brands;
   }
 
+    // returns brands that this store does not carry
+  function getOtherBrands() {
+    $query = $GLOBALS['DB']->query("SELECT DISTINCT brands.* FROM brands JOIN stores_brands ON brand_id = brands.id
+  JOIN stores ON stores.id = store_id
+  WHERE brands.id NOT IN (SELECT brands.id FROM brands JOIN stores_brands ON brand_id = brands.id JOIN stores ON stores.id = store_id WHERE stores.id = {$this->getId()});");
+
+    $brands = [];
+    foreach ($query as $brand) {
+      $new_brand = new Brand($brand['brand'], $brand['id']);
+      array_push($brands, $new_brand);
+    }
+    return $brands;
+  }
+
   // DB setters
   function addBrand($brand) {
     $insert = true;
