@@ -26,8 +26,7 @@
       $this->id = (int) $id;
     }
 
-    // DB
-
+    // DB save/delete
     function save() {
       $statement = $GLOBALS['DB']->query("INSERT INTO brands (brand) VALUES ('{$this->getBrand()}') RETURNING id;");
       $result = $statement->fetch(PDO::FETCH_ASSOC);
@@ -39,6 +38,7 @@
       $GLOBALS['DB']->exec("DELETE FROM stores_brands WHERE brand_id = {$this->getId()};");
     }
 
+    // DB getters
     function getStores() {
       $returned_results = $GLOBALS['DB']->query("SELECT stores.* FROM stores JOIN stores_brands ON (stores.id = stores_brands.store_id) JOIN brands ON (stores_brands.brand_id = brands.id) WHERE brands.id = {$this->getId()};");
       $stores = [];
@@ -48,6 +48,8 @@
       }
       return $stores;
     }
+
+    // DB setters
 
     // static methods
     static function getAll() {
@@ -61,8 +63,8 @@
     }
 
     static function deleteAll() {
-      $GLOBALS['DB']->exec("DELETE FROM brands *;");
-      $GLOBALS['DB']->exec("DELETE FROM stores_brands *;");
+      $GLOBALS['DB']->exec("DELETE FROM brands;");
+      $GLOBALS['DB']->exec("DELETE FROM stores_brands;");
     }
   }
 ?>

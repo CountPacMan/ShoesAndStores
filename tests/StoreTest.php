@@ -105,13 +105,11 @@
     function testDelete() {
       //Arrange
       $name = "Cheapo Shoe Emporium";
-      $id = 1;
-      $test_store = new Store($name, $id);
+      $test_store = new Store($name);
       $test_store->save();
 
-      $brand_name = "Dennis Lumberg";
-      $id2 = 2;
-      $test_brand = new Brand($brand_name, $id2);
+      $brand_name = "Knee-Kays";
+      $test_brand = new Brand($brand_name);
       $test_brand->save();
 
       //Act
@@ -141,13 +139,11 @@
     function testAddBrand() {
         //Arrange
         $name = "Cheapo Shoe Emporium";
-        $id = 1;
-        $test_store = new Store($name, $id);
+        $test_store = new Store($name);
         $test_store->save();
 
-        $brand_name = "Dennis Lumberg";
-        $id2 = 2;
-        $test_brand = new Brand($brand_name, $id2);
+        $brand_name = "Knee-Kays";
+        $test_brand = new Brand($brand_name);
         $test_brand->save();
 
         //Act
@@ -155,6 +151,47 @@
 
         //Assert
         $this->assertEquals($test_store->getBrands()[0], $test_brand);
+    }
+
+    function test_getBrands() {
+      // Arrange
+      $name = "Cheapo Shoe Emporium";
+      $test_store = new Store($name);
+      $test_store->save();
+
+      $brand_name = "Knee-Kays";
+      $test_brand = new Brand($brand_name);
+      $test_brand->save();
+
+      $brand_name2 = "Bob";
+      $test_brand2 = new Brand($brand_name2);
+      $test_brand2->save();
+
+      // Act
+      $test_store->addBrand($test_brand);
+      $test_store->addBrand($test_brand2);
+
+      // Assert
+      $this->assertEquals($test_store->getBrands(), [$test_brand, $test_brand2]);
+    }
+
+    function test_search() {
+      // for some unknown reason, the teardown is not always working. I'm having to run it agian here or it won't clear the stores.
+      Store::deleteAll();
+      // Arrange
+      $name = "Cheapo Shoe Emporium";
+      $test_store = new Store($name);
+      $test_store->save();
+
+      $brand_name = "Knee-Kays";
+      $test_brand = new Brand($brand_name);
+      $test_brand->save();
+
+      // Act
+      $result = Store::search($name);
+
+      // Assert
+      $this->assertEquals($test_store, $result[0]);
     }
 
   }

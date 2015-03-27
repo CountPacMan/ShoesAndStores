@@ -69,8 +69,8 @@ class Store {
 
   // static methods
   static function deleteAll() {
-    $GLOBALS['DB']->exec("DELETE FROM stores *;");
-    $GLOBALS['DB']->exec("DELETE FROM stores_brands *;");
+    $GLOBALS['DB']->exec("DELETE FROM stores;");
+    $GLOBALS['DB']->exec("DELETE FROM stores_brands;");
   }
 
   static function getAll() {
@@ -93,6 +93,16 @@ class Store {
       }
     }
     return $found_store;
+  }
+
+  static function search($name) {
+    $stores = [];
+    $returned_stores = $GLOBALS['DB']->query("SELECT * FROM stores WHERE UPPER(name) LIKE UPPER('%{$name}%');");
+    foreach ($returned_stores as $store) {
+      $new_store = new Store($store['name'], $store['id']);
+      array_push($stores, $new_store);
+    }
+    return $stores;
   }
 
 }
