@@ -140,6 +140,46 @@
     return $app['twig']->render('brands.html.twig', array('brands' => $brands, 'stores' => $stores));
   });
 
+  // patch
+
+  $app->patch("/stores/{id}", function($id) use ($app) {
+    $store = Store::find($id);
+    $delete_warning = false;
+    if (empty($_POST['brand_id'])) {
+      $delete_warning = true;
+    } else {
+      if (!empty($_POST['name'])) {
+        $store->updateName($_POST['name']);
+      }
+      $brands = [];
+      for ($i = 0; $i < count($_POST['brand_id']); $i++) {
+        $brand = Brand::find($_POST['brand_id'][$i]);
+        array_push($brands, $brand);
+      }
+      $store->updateBrands($brands);
+    }
+
+    $brands = $store->getBrands();
+    $other_brands = $store->getOtherBrands();
+    return $app['twig']->render('stores_edit.html.twig', array('store' => $store, 'brands' => $brands, 'other_brands' => $other_brands, 'delete_warning' => $delete_warning));
+  });
+
+  $app->patch("/brands/{id}", function($id) use ($app) {
+    $brand = Brand::find($id);
+    if (!empty($_POST['name'])) {
+      $brand->updateName($_POST['name']);
+    }
+    $stores = [];
+    for ($i = 0; $i < count($_POST['book_id']); $i++) {
+      $store = Store::find($_POST['book_id'][$i]);
+      array_push($stores, $store);
+    }
+    $brand->updateStores($stores);
+    $stores = $brand->getStores();
+    $other_stores = $brand->getOtherStores();
+    return $app['twig']->render('brands_edit.html.twig', array('brand' => $brand, 'stores' => $stores, 'other_stores' => $other_stores));
+  });
+
   // delete
 
   $app->delete("/destroy", function() use ($app) {
