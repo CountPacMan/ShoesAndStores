@@ -25,3 +25,6 @@ This web app lets a user add shoe brands and stores to a catalog. Each brand can
 - Twig ver 1.18.0
 - PHPUnit ver 4.5.0
 - PostgreSQL ver 9.4.1
+
+#### Database
+CREATE DATABASE shoes; CREATE TABLE stores (id serial PRIMARY KEY, name varchar); CREATE TABLE brands (id serial PRIMARY KEY, brand varchar); CREATE TABLE stores_brands (id serial PRIMARY KEY, store_id int REFERENCES stores, brand_id int REFERENCES brands); CREATE DATABASE shoes_test WITH TEMPLATE shoes;
