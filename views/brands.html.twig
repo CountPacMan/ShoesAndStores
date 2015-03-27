@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel='stylesheet' href='/../css/styles.css'>
+    <title>Brands!</title>
+  </head>
+  <body>
+    <div class='container-fluid'>
+
+      <!-- PAGE BANNER -->
+      <div class='page-header'>
+        <a href='/'><img src='/img/shoe.png' alt='shoe logo'></a>
+        <div class='logo-words'>
+          <h1>Shoes and Stores</h1>
+          <h5>connecting shoes to stores</h5>
+        </div>
+      </div>
+
+      {% if brands is not empty %}
+        <h3>Brands</h3>
+        <h5>Click on an brand to edit</h5>
+        {% for i in 0..brands|length - 1 %}
+          <ul>
+            <li>
+              <form action='/brands/{{ brands[i].getId }}' method='post' class='inlineForm'>
+                <input name='_method' type='hidden' value='delete'>
+                <input type='submit' class='deleteLink' value='x'>
+              </form>
+              <a href='/brands/{{ brands[i].getId }}/edit'>{{ brands[i].getBrand }}</a> is carried by
+              {{ stores[i]|length > 1 ? 'stores' : 'store' }}
+              {% for j in 0..stores[i]|length - 1 %}
+                [<a href='/stores/{{ stores[i][j].getId }}'>{{ stores[i][j].getName }}</a>]
+              {% endfor %}
+
+            </li>
+          </ul>
+        {% endfor %}
+      {% else %}
+        <h3>No brands found</h3>
+      {% endif %}
+
+      <a href='/'>Home</a>
+    </div>
+  </body>
+</html>
