@@ -71,6 +71,15 @@ class Store {
     $this->setName($name);
   }
 
+  function updateBrands($brands) {
+    // delete store's brands in join table
+    $GLOBALS['DB']->exec("DELETE FROM stores_brands WHERE store_id = {$this->getId()};");
+    // add store's brands in join table
+    foreach ($brands as $brand) {
+      $this->addBrand($brand);
+    }
+  }
+
   // static methods
   static function deleteAll() {
     $GLOBALS['DB']->exec("DELETE FROM stores;");

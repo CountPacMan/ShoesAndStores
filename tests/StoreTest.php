@@ -209,5 +209,36 @@
       $this->assertEquals("Discount Surplus Clogs", $test_store->getName());
     }
 
+    function test_updateBrands() {
+      Store::deleteAll();
+      // Assert
+      $name = "Cheapo Shoe Emporium";
+      $test_store = new Store($name);
+      $test_store->save();
+
+      $brand_name = "Knee-Kays";
+      $test_brand = new Brand($brand_name);
+      $test_brand->save();
+
+      $brand_name2 = "Bob";
+      $test_brand2 = new Brand($brand_name2);
+      $test_brand2->save();
+
+      // Act
+      $test_store->addBrand($test_brand);
+      $test_store->addBrand($test_brand2);
+
+      $brand_name3 = "ReLexicon";
+      $new_brand = new Brand($brand_name3);
+      $new_brand->save();
+      $brands = [];
+      array_push($brands, $test_brand);
+      array_push($brands, $new_brand);
+      $test_store->updateBrands($brands);
+
+      // Assert
+      $this->assertEquals($brands[1], $test_store->getBrands()[1]);
+    }
+
   }
 ?>
