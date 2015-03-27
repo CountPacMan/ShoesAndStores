@@ -194,5 +194,20 @@
       $this->assertEquals($test_store, $result[0]);
     }
 
+    function test_updateName() {
+      // Assert
+      $name = "Cheapo Shoe Emporium";
+      $test_store = new Store($name);
+      $test_store->save();
+
+      $new_name = "Discount Surplus Clogs";
+
+      // Act
+      $test_store->updateName($new_name);
+
+      // Assert
+      $this->assertEquals("Discount Surplus Clogs", $test_store->getName());
+    }
+
   }
 ?>

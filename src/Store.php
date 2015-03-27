@@ -66,6 +66,10 @@ class Store {
     }
   }
 
+  function updateName($name) {
+    $GLOBALS['DB']->exec("UPDATE stores SET name = '{$name}' WHERE id = {$this->getId()}");
+    $this->setName($name);
+  }
 
   // static methods
   static function deleteAll() {
