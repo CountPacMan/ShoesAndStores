@@ -20,6 +20,9 @@
       {% if delete_warning %}
         <h2 class='error'>ERROR: unchecking all brands will delete the store. Click on Delete Store button to confirm.</h2>
       {% endif %}
+      {% if patched %}
+        <h2 class='success'>Updated!</h2>
+      {% endif %}
 
       <h1>Update {{ store.getName }}</h1>
 

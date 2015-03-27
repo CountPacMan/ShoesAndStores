@@ -20,10 +20,13 @@
       {% if delete_warning %}
         <h2 class='error'>ERROR: unchecking all stores will delete the brand. Click on Delete Brand button to confirm.</h2>
       {% endif %}
+      {% if patched %}
+        <h2 class='success'>Updated!</h2>
+      {% endif %}
 
       <h1>Update {{ brand.getBrand }}</h1>
 
-      <form action='/brands{{ brand.getId }}' method='post'>
+      <form action='/brands/{{ brand.getId }}' method='post'>
         <input name='_method' type='hidden' value='patch'>
 
         <div class='form-group'>

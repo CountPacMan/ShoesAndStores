@@ -32,7 +32,7 @@
     $store = Store::find($id);
     $brands = $store->getBrands();
     $other_brands = $store->getOtherBrands();
-    return $app['twig']->render('stores_edit.html.twig', array('store' => $store, 'brands' => $brands, 'other_brands' => $other_brands, 'delete_warning' => false));
+    return $app['twig']->render('stores_edit.html.twig', array('store' => $store, 'brands' => $brands, 'other_brands' => $other_brands, 'delete_warning' => false, 'patched' => false));
   });
 
   $app->get("/stores", function() use ($app) {
@@ -65,7 +65,7 @@
     $brand = Brand::find($id);
     $stores = $brand->getStores();
     $other_stores = $brand->getOtherStores();
-    return $app['twig']->render('brands_edit.html.twig', array('brand' => $brand, 'stores' => $stores, 'other_stores' => $other_stores, 'delete_warning' => false));
+    return $app['twig']->render('brands_edit.html.twig', array('brand' => $brand, 'stores' => $stores, 'other_stores' => $other_stores, 'delete_warning' => false, 'patched' => false));
   });
 
   // post  ********************************  post
@@ -137,6 +137,7 @@
   $app->patch("/stores/{id}", function($id) use ($app) {
     $store = Store::find($id);
     $delete_warning = false;
+    $patched = false;
     if (empty($_POST['brand_id'])) {
       $delete_warning = true;
     } else {
@@ -149,32 +150,35 @@
         array_push($brands, $brand);
       }
       $store->updateBrands($brands);
+      $patched = true;
     }
 
     $brands = $store->getBrands();
     $other_brands = $store->getOtherBrands();
-    return $app['twig']->render('stores_edit.html.twig', array('store' => $store, 'brands' => $brands, 'other_brands' => $other_brands, 'delete_warning' => $delete_warning));
+    return $app['twig']->render('stores_edit.html.twig', array('store' => $store, 'brands' => $brands, 'other_brands' => $other_brands, 'delete_warning' => $delete_warning, 'patched' => $patched));
   });
 
   $app->patch("/brands/{id}", function($id) use ($app) {
     $brand = Brand::find($id);
     $delete_warning = false;
+    $patched = false;
     if (empty($_POST['store_id'])) {
       $delete_warning = true;
     } else {
-      if (!empty($_POST['name'])) {
-        $brand->updateName($_POST['name']);
+      if (!empty($_POST['brand'])) {
+        $brand->updateBrand($_POST['brand']);
       }
       $stores = [];
-      for ($i = 0; $i < count($_POST['book_id']); $i++) {
-        $store = Store::find($_POST['book_id'][$i]);
+      for ($i = 0; $i < count($_POST['store_id']); $i++) {
+        $store = Store::find($_POST['store_id'][$i]);
         array_push($stores, $store);
       }
       $brand->updateStores($stores);
+      $patched = true;
     }
     $stores = $brand->getStores();
     $other_stores = $brand->getOtherStores();
-    return $app['twig']->render('brands_edit.html.twig', array('brand' => $brand, 'stores' => $stores, 'other_stores' => $other_stores, 'delete_warning' => $delete_warning));
+    return $app['twig']->render('brands_edit.html.twig', array('brand' => $brand, 'stores' => $stores, 'other_stores' => $other_stores, 'delete_warning' => $delete_warning, 'patched' => $patched));
   });
 
   // delete  ********************************  delete
