@@ -148,6 +148,37 @@
     return $app['twig']->render('index.html.twig', array('added' => false, 'stores' => Store::getAll(), 'brand_added' => true, 'brands' => Brand::getAll(), 'no_brand_fail' => false));
   });
 
+  $app->delete("/stores/{id}", function($id) use ($app) {
+    $store = Store::find($id);
+    $book_brands = $store->getBrands();
+    // if a store associated with the brand has only this one brand, delete the store. All stores must have at least one brand they carry.
+    foreach ($book_brands as $brand) {
+      if (count($brand->getStores()) == 1) {
+        $store->deleteWithBrand($brand->getId());
+      }
+    }
+    $store->delete();
+    return $app['twig']->render('index.html.twig', array('added' => false, 'stores' => Store::getAll(), 'brand_added' => true, 'brands' => Brand::getAll(), 'no_brand_fail' => false));
+  });
+
+  $app->delete("/brands_pure/{id}", function($id) use ($app) {
+    $brand = Brand::find($id);
+    // if a brand associated with the store is only carried by this one store, delete the brand. All brands must have at least one store that carries them.
+    $brand_stores = $brand->getStores();
+    foreach ($brand_stores as $store) {
+      if (count($store->getBrands()) == 1) {
+        $brand->deleteWithStore($store->getId());
+      }
+    }
+    $brand->delete();
+    $stores = [];
+    $brands = Brand::getAll();
+    foreach ($brands as $brand) {
+      $store = $brand->getStores();
+      array_push($stores, $store);
+    }
+    return $app['twig']->render('brands.html.twig', array('stores' => $stores, 'brands' => $brands));
+  });
 
   return $app;
 ?>
