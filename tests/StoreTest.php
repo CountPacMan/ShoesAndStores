@@ -122,5 +122,21 @@
       $this->assertEquals([], $test_brand->getStores());
     }
 
+    function test_find() {
+      // Arrange
+      $name = "Cheapo Shoe Emporium";
+      $name2 = "Discount Surplus Clogs";
+      $test_store = new Store($name);
+      $test_store->save();
+      $test_store2 = new Store($name2);
+      $test_store2->save();
+
+      // Act
+      $result = Store::find($test_store->getId());
+
+      // Assert
+      $this->assertEquals($test_store, $result);
+    }
+
   }
 ?>
