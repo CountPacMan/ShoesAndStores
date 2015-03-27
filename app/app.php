@@ -206,7 +206,7 @@
     return $app['twig']->render('index.html.twig', array('added' => false, 'stores' => Store::getAll(), 'brand_added' => true, 'brands' => Brand::getAll(), 'no_brand_fail' => false));
   });
 
-  $app->delete("/brands_pure/{id}", function($id) use ($app) {
+  $app->delete("/brands/{id}", function($id) use ($app) {
     $brand = Brand::find($id);
     // if a brand associated with the store is only carried by this one store, delete the brand. All brands must have at least one store that carries them.
     $brand_stores = $brand->getStores();
