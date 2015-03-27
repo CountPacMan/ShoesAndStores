@@ -45,7 +45,7 @@
 
     // DB getters
     function getStores() {
-      $returned_results = $GLOBALS['DB']->query("SELECT stores.* FROM stores JOIN stores_brands ON (stores.id = stores_brands.store_id) JOIN brands ON (stores_brands.brand_id = brands.id) WHERE brands.id = {$this->getId()};");
+      $returned_results = $GLOBALS['DB']->query("SELECT stores.* FROM stores JOIN stores_brands ON (stores.id = stores_brands.store_id) JOIN brands ON (stores_brands.brand_id = brands.id) WHERE brands.id = {$this->getId()} ORDER BY name;");
       $stores = [];
       foreach($returned_results as $result) {
         $new_store = new Store($result['name'], $result['id']);
@@ -57,7 +57,7 @@
     function getOtherStores() {
       $query = $GLOBALS['DB']->query("SELECT DISTINCT stores.* FROM stores JOIN stores_brands ON store_id = stores.id
     JOIN brands ON brands.id = brand_id
-    WHERE stores.id NOT IN (SELECT stores.id FROM stores JOIN stores_brands ON store_id = stores.id JOIN brands ON brands.id = brand_id WHERE brands.id = {$this->getId()});");
+    WHERE stores.id NOT IN (SELECT stores.id FROM stores JOIN stores_brands ON store_id = stores.id JOIN brands ON brands.id = brand_id WHERE brands.id = {$this->getId()}) ORDER BY name;");
 
       $stores = [];
       foreach ($query as $store) {
@@ -88,7 +88,7 @@
 
     // static methods
     static function getAll() {
-      $returned_brands = $GLOBALS['DB']->query("SELECT * FROM brands;");
+      $returned_brands = $GLOBALS['DB']->query("SELECT * FROM brands ORDER by brand;");
       $brands = array();
       foreach($returned_brands as $brand) {
         $new_brand = new Brand($brand['brand'], $brand['id']);
@@ -116,7 +116,7 @@
 
     static function search($brand) {
       $brands = [];
-      $returned_brands = $GLOBALS['DB']->query("SELECT * FROM brands WHERE UPPER(brand) LIKE UPPER('%{$brand}%');");
+      $returned_brands = $GLOBALS['DB']->query("SELECT * FROM brands WHERE UPPER(brand) LIKE UPPER('%{$brand}%') ORDER BY brand;");
       foreach ($returned_brands as $brand) {
         $new_brand = new Brand($brand['brand'], $brand['id']);
         array_push($brands, $new_brand);

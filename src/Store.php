@@ -45,7 +45,7 @@ class Store {
 
   // DB getters
   function getBrands() {
-    $returned_results = $GLOBALS['DB']->query("SELECT brands.* FROM brands JOIN stores_brands ON (brands.id = stores_brands.brand_id) JOIN stores ON (stores_brands.store_id = stores.id) WHERE stores.id = {$this->getId()};");
+    $returned_results = $GLOBALS['DB']->query("SELECT brands.* FROM brands JOIN stores_brands ON (brands.id = stores_brands.brand_id) JOIN stores ON (stores_brands.store_id = stores.id) WHERE stores.id = {$this->getId()} ORDER BY brand;");
     $brands = [];
     foreach($returned_results as $result) {
       $new_brand = new Brand($result['brand'], $result['id']);
@@ -58,7 +58,7 @@ class Store {
   function getOtherBrands() {
     $query = $GLOBALS['DB']->query("SELECT DISTINCT brands.* FROM brands JOIN stores_brands ON brand_id = brands.id
   JOIN stores ON stores.id = store_id
-  WHERE brands.id NOT IN (SELECT brands.id FROM brands JOIN stores_brands ON brand_id = brands.id JOIN stores ON stores.id = store_id WHERE stores.id = {$this->getId()});");
+  WHERE brands.id NOT IN (SELECT brands.id FROM brands JOIN stores_brands ON brand_id = brands.id JOIN stores ON stores.id = store_id WHERE stores.id = {$this->getId()}) ORDER BY brand;");
 
     $brands = [];
     foreach ($query as $brand) {
@@ -106,7 +106,7 @@ class Store {
   }
 
   static function getAll() {
-    $returned_stores = $GLOBALS['DB']->query("SELECT * FROM stores;");
+    $returned_stores = $GLOBALS['DB']->query("SELECT * FROM stores ORDER BY name;");
     $stores = [];
     foreach ($returned_stores as $store) {
       $new_store = new Store($store['name'], $store['id']);
@@ -129,7 +129,7 @@ class Store {
 
   static function search($name) {
     $stores = [];
-    $returned_stores = $GLOBALS['DB']->query("SELECT * FROM stores WHERE UPPER(name) LIKE UPPER('%{$name}%');");
+    $returned_stores = $GLOBALS['DB']->query("SELECT * FROM stores WHERE UPPER(name) LIKE UPPER('%{$name}%') ORDER BY name;");
     foreach ($returned_stores as $store) {
       $new_store = new Store($store['name'], $store['id']);
       array_push($stores, $new_store);
