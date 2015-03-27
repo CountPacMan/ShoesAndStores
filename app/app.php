@@ -36,7 +36,7 @@
     $store = Store::find($id);
     $brands = $store->getBrands();
     $other_brands = $store->getOtherBrands();
-    return $app['twig']->render('stores_edit.html.twig', array('store' => $store, 'brands' => $brands, 'other_brands' => $other_brands));
+    return $app['twig']->render('stores_edit.html.twig', array('store' => $store, 'brands' => $brands, 'other_brands' => $other_brands, 'delete_warning' => false));
   });
 
   $app->get("/stores", function() use ($app) {
@@ -73,7 +73,7 @@
     $brand = Brand::find($id);
     $stores = $brand->getStores();
     $other_stores = $brand->getOtherStores();
-    return $app['twig']->render('brands_edit.html.twig', array('brand' => $brand, 'stores' => $stores, 'other_stores' => $other_stores));
+    return $app['twig']->render('brands_edit.html.twig', array('brand' => $brand, 'stores' => $stores, 'other_stores' => $other_stores, 'delete_warning' => false));
   });
 
   // post
@@ -166,18 +166,23 @@
 
   $app->patch("/brands/{id}", function($id) use ($app) {
     $brand = Brand::find($id);
-    if (!empty($_POST['name'])) {
-      $brand->updateName($_POST['name']);
+    $delete_warning = false;
+    if (empty($_POST['store_id'])) {
+      $delete_warning = true;
+    } else {
+      if (!empty($_POST['name'])) {
+        $brand->updateName($_POST['name']);
+      }
+      $stores = [];
+      for ($i = 0; $i < count($_POST['book_id']); $i++) {
+        $store = Store::find($_POST['book_id'][$i]);
+        array_push($stores, $store);
+      }
+      $brand->updateStores($stores);
     }
-    $stores = [];
-    for ($i = 0; $i < count($_POST['book_id']); $i++) {
-      $store = Store::find($_POST['book_id'][$i]);
-      array_push($stores, $store);
-    }
-    $brand->updateStores($stores);
     $stores = $brand->getStores();
     $other_stores = $brand->getOtherStores();
-    return $app['twig']->render('brands_edit.html.twig', array('brand' => $brand, 'stores' => $stores, 'other_stores' => $other_stores));
+    return $app['twig']->render('brands_edit.html.twig', array('brand' => $brand, 'stores' => $stores, 'other_stores' => $other_stores, 'delete_warning' => $delete_warning));
   });
 
   // delete
