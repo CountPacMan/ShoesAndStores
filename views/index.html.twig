@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel='stylesheet' href='/../css/styles.css'>
+    <title>Shoes and Stores</title>
+  </head>
+  <body>
+
+    <div class='container-fluid'>
+
+      <!-- PAGE BANNER -->
+      <div class='page-header'>
+        <a href='/'><img src='/img/shoe.png' alt='shoe logo'></a>
+        <div class='logo-words'>
+          <h1>Shoes and Stores</h1>
+          <h5>connecting shoes to stores</h5>
+        </div>
+      </div>
+
+      {% if not brand_added %}
+        <h2 class='error'>ERROR: Must add at least one store when adding an brand
+        </h2>
+      {% endif %}
+      {% if no_brand_fail %}
+        <h2 class='error'>ERROR: Must add at least one brand when adding a store
+        </h2>
+      {% endif %}
+      {% if added %}
+        <h2 class='success'>added!</h2>
+      {% endif %}
+        {% if stores is not empty %}
+          <!-- SEARCH FOR Stores -->
+          <div class = 'row'>
+            <div class='col-md-12'>
+              <form action='/search/stores' method='post'>
+                <div class='form-group'>
+                  <label for='name'>Store name to search:</label>
+                  <input id='name' name='name' class='form-control' type='text' required>
+                </div>
+                <button type='submit' class='btn btn-success'>Search</button>
+              </form>
+              <form action='/stores'>
+                <button type='submit' class='btn btn-primary'>All Stores</button>
+              </form>
+            </div>
+          </div>
+
+
+          <!-- SEARCH FOR Brands -->
+          <div class = 'row'>
+            <div class='col-md-12'>
+              <form action='/search/brands' method='post'>
+                <div class='form-group'>
+                  <label for='name'>Search Brand:</label>
+                  <input id='name' name='name' class='form-control' type='text' required>
+                </div>
+                <button type='submit' class='btn btn-success'>Search</button>
+              </form>
+              <form action='/brands'>
+                <button type='submit' class='btn btn-primary'>All Brands</button>
+              </form>
+            </div>
+          </div>
+        {% endif %}
+
+      <!-- BRANDS AND STORES ROW -->
+      <div class='row'>
+        <!-- STORES -->
+        {% if stores is empty %}
+          <div class='col-md-12'>
+        {% else %}
+          <div class='col-md-6'>
+        {% endif %}
+            <h3>Create a new Store</h3>
+
+            <form action='/stores' method='post'>
+              <div class='form-group'>
+                <label for='name'>Store name:</label>
+                <input id='name' name='name' class='form-control' type='text' required>
+
+              </div>
+              <div class='form-group'>
+                <label for='brand'>Brand name:</label>
+                <input id='brand' name='brand' class='form-control' type='text'>
+              </div>
+              Select brands for store
+              <div class='form-group'>
+                {% for brand in brands %}
+                  <input type="checkbox" name="brand_id[]" value="{{ brand.getId }}"> <a href="/brands/{{ brand.getId }}"> {{ brand.getBrand }} </a><br>
+                {% endfor %}
+              </div>
+              <button type='submit' class='btn btn-success'>Add Store</button>
+            </form>
+          </div>
+
+        <!-- BRANDS -->
+        <div class='col-md-6'>
+          {% if stores is not empty %}
+            <h3>Create a new Brand</h3>
+
+            <form action='/brands' method='post'>
+              <div class='form-group'>
+                <label for='brand'>Brand Name:</label>
+                <input id='brand' name='brand' class='form-control' type='text' required>
+              </div>
+
+              Select stores for Brand
+              <div class='form-group'>
+                {% for store in stores %}
+                  <input type="checkbox" name="store_id[]" value="{{ store.getId }}"> <a href="/stores/{{ store.getId }}"> {{ store.getName }} </a><br>
+                {% endfor %}
+              </div>
+              <button type='submit' class='btn btn-success'>Add Brand</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class='page-footer'>
+        {% if stores is not empty %}
+          <div class='row'>
+            <div id='footer' class='col-md-12'>
+              <form action='/destroy' method='post'>
+                <input name='_method' type='hidden' value='delete'>
+                <button type='submit' id='destroy' class='btn btn-danger center-block'>Destroy Database</button>
+              </form>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+    </div><!-- END CONTAINER -->
+  </body>
+</html>

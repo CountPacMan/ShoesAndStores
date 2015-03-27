@@ -1,0 +1,59 @@
+img {
+  width: 100px;
+  height: 85px;
+  float: left;
+  clear: both;
+  padding-bottom: 10px;
+}
+
+h5 {
+  font-style: italic;
+  margin: 0;
+}
+
+.page-footer {
+  position: relative;
+  clear: both;
+}
+
+#destroy {
+  float: none;
+  text-align: center;
+  margin: 15px auto;
+}
+
+.btn {
+  float: right;
+  margin: 0 0 0 8px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.deleteLink,
+.properLink {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.properLink {
+  color: blue;
+}
+
+.deleteLink {
+  color: grey;
+}
+
+.inlineForm {
+  display:inline;
+}
+
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
+}
