@@ -20,7 +20,7 @@
       {% if delete_warning %}
         <h2 class='error'>ERROR: unchecking all brands will delete the store. Click on Delete Store button to confirm.</h2>
       {% endif %}
-      
+
       <h1>Update {{ store.getName }}</h1>
 
       <form action='/stores/{{ store.getId }}' method='post'>
@@ -38,15 +38,17 @@
           {% for brand in other_brands %}
             <input type="checkbox" name="brand_id[]" value="{{ brand.getId }}"><a href="/brands/{{ brand.getId }}"> {{ brand.getBrand }} </a><br>
           {% endfor %}
-
-          <button type='submit' class='btn btn-success'>Update</button>
+          <div class='col-md-12 btn'>
+            <button type='submit' class='btn btn-success'>Update</button>
+          </div>
         </div>
       </form>
       <div class='form-group'>
         <form action='/stores/{{ store.getId }}' method='post'>
           <input name='_method' type='hidden' value='delete'>
-
-          <button type='submit' class='btn btn-danger'>Delete Store</button>
+          <div class='col-md-12 btn'>
+            <button type='submit' class='btn btn-danger'>Delete Store</button>
+          </div>
         </form>
       </div>
       <p><a href='/'>Home</a></p>
