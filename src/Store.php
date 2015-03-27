@@ -38,6 +38,11 @@ class Store {
     $GLOBALS['DB']->exec("DELETE FROM stores_brands WHERE store_id = {$this->getId()};");
   }
 
+  function deleteWithBrand($brand_id) {
+    $GLOBALS['DB']->exec("DELETE FROM stores_brands WHERE store_id = {$this->getId()} AND brand_id = {$brand_id};");
+    $GLOBALS['DB']->exec("DELETE FROM brands WHERE id = {$brand_id};");
+  }
+
   // DB getters
   function getBrands() {
     $returned_results = $GLOBALS['DB']->query("SELECT brands.* FROM brands JOIN stores_brands ON (brands.id = stores_brands.brand_id) JOIN stores ON (stores_brands.store_id = stores.id) WHERE stores.id = {$this->getId()};");
