@@ -274,9 +274,6 @@
       array_push($other_brands, $test_brand2);
       array_push($other_brands, $test_brand3);
 
-      var_dump($other_brands);
-      var_dump($test_store->getOtherBrands());
-
       // I haven't figured out how to do an array of objects comparison that gives me consistent results, so I'll assume that if the same number of elements are returned by my method, the test will pass
       $result = (count([$other_brands]) == count([$test_store->getOtherBrands()]));
       // Assert
