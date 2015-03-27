@@ -89,10 +89,10 @@
         $brand->addStore($store);
         $added = true;
       }
-    } elseif (!empty($_POST['name'])) {
+    } elseif (!empty($_POST['brand'])) {
       $store = new Store($_POST['name']);
       $store->save();
-      $brand = new Brand($_POST['name']);
+      $brand = new Brand($_POST['brand']);
       $brand->save();
       $store->addBrand($brand);
       $added = true;
