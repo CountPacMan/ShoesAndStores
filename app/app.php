@@ -16,20 +16,16 @@
   use Symfony\Component\HttpFoundation\Request;
   Request::enableHttpMethodParameterOverride();
 
-  // get
+  // get  ********************************  get
 
   $app->get("/", function() use ($app) {
     return $app['twig']->render('index.html.twig', array('added' => false, 'stores' => Store::getAll(), 'brand_added' => true, 'brands' => Brand::getAll(), 'no_brand_fail' => false));
   });
 
   $app->get("/stores/{id}", function($id) use ($app) {
-    $store = Store::find($id);
-    $stores = [];
-    array_push($stores, $store);
-    $brands = [];
-    $brand = $store->getBrands();
-    array_push($brands, $brand);
-    return $app['twig']->render('stores.html.twig', array('brands' => $brands, 'stores' => $stores));
+    $stores = Store::find($id);
+    $brands = $stores->getBrands();
+    return $app['twig']->render('stores.html.twig', array('brands' => [$brands], 'stores' => [$stores]));
   });
 
   $app->get("/stores/{id}/edit", function($id) use ($app) {
@@ -60,13 +56,9 @@
   });
 
   $app->get("/brands/{id}", function($id) use ($app) {
-    $brand = Brand::find($id);
-    $brands = [];
-    array_push($brands, $brand);
-    $store = $brand->getStores();
-    $stores = [];
-    array_push($stores, $store);
-    return $app['twig']->render('brands.html.twig', array('stores' => $stores, 'brands' => $brands));
+    $brands = Brand::find($id);
+    $stores = $brands->getStores();
+    return $app['twig']->render('brands.html.twig', array('stores' => [$stores], 'brands' => [$brands]));
   });
 
   $app->get("/brands/{id}/edit", function($id) use ($app) {
@@ -76,7 +68,7 @@
     return $app['twig']->render('brands_edit.html.twig', array('brand' => $brand, 'stores' => $stores, 'other_stores' => $other_stores, 'delete_warning' => false));
   });
 
-  // post
+  // post  ********************************  post
 
   $app->post("/stores", function() use ($app) {
     $added = false;
@@ -140,7 +132,7 @@
     return $app['twig']->render('brands.html.twig', array('brands' => $brands, 'stores' => $stores));
   });
 
-  // patch
+  // patch  ********************************  patch
 
   $app->patch("/stores/{id}", function($id) use ($app) {
     $store = Store::find($id);
@@ -185,7 +177,7 @@
     return $app['twig']->render('brands_edit.html.twig', array('brand' => $brand, 'stores' => $stores, 'other_stores' => $other_stores, 'delete_warning' => $delete_warning));
   });
 
-  // delete
+  // delete  ********************************  delete
 
   $app->delete("/destroy", function() use ($app) {
     Store::deleteAll();
