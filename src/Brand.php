@@ -74,6 +74,13 @@
     }
 
     function updateStores($stores) {
+      $this_stores = $this->getStores();
+      // if a brand associated with the store is carried by only this one store, delete the store. All brands must have at least one store that carries them.
+      foreach ($this_stores as $store) {
+        if (count($store->getBrands()) == 1 && !in_array($store, $stores)) {
+          $this->deleteWithStore($store->getId());
+        }
+      }
       // delete brand's stores in join table
       $GLOBALS['DB']->exec("DELETE FROM stores_brands WHERE brand_id = {$this->getId()};");
       // add brands stores in join table

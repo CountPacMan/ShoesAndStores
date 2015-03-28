@@ -191,9 +191,9 @@
 
   $app->delete("/stores/{id}", function($id) use ($app) {
     $store = Store::find($id);
-    $book_brands = $store->getBrands();
+    $brands = $store->getBrands();
     // if a store associated with the brand has only this one brand, delete the store. All stores must have at least one brand they carry.
-    foreach ($book_brands as $brand) {
+    foreach ($brands as $brand) {
       if (count($brand->getStores()) == 1) {
         $store->deleteWithBrand($brand->getId());
       }
